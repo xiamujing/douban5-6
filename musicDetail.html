@@ -58,6 +58,26 @@
             font-size: 26px;
             margin-right: 5px;
         }
+
+        .info{
+            padding: 10px;
+        }
+
+        .setion-title{
+            width: 80px;
+            height: 30px;
+            border: 1px solid #00b7a5;
+            border-radius: 5px;
+            color: #00b7a5;
+            text-align: center;
+            line-height: 30px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .section-detail{
+            font-size: 14px;
+            color: #666;
+        }
     
     </style>
 </head>
@@ -67,36 +87,33 @@
 
     <div id="app">
         <div class="navbar">
-            <div></div>
-            <div>图书列表</div>
+            <div><a href="javascript:history.back()">返回</a></div>
+            <div>{{item.name}}</div>
             <div></div>
         </div>
-
         <div class="content">
-            <div class="search-bar">
+            
+            <div class="cell"  >
+                <img :src="item.image?imagePrefix+item.image:''" alt="">
+                <span>{{item.name}}</span>
+                <span>{{item.director}}</span>
+            </div>
+
+            <div class="info">
                 <div>
-                    <input v-model="keyword" @keyup="dealSearch" type="text" placeholder="请输入搜索关键字">
+                    <div class="setion-title">
+                        音乐简介
+                    </div>
+                    <div class="section-detail">
+                        {{item.introduce}}
+                    </div>
+
                 </div>
-                <button @click="dealSearch">搜索</button>
-            </div>
-            <div class="list">
-
-                <div class="cell" v-for="(item,index) in list" @click="dealShowDetail(item.id)">
-                    <img :src="imagePrefix+item.image" alt="">
-                    <span>{{item.name}}</span>
-                    <span>{{item.publisher}}</span>
-                    <span><span class="price">{{item.price}}</span>元</span>
-                    <span>{{item.pages}}页</span>
-                </div>
-
+                
 
             </div>
 
-            <div class="tabbar">
-                <a href="index.html">图书</a>
-                <a href="music.html">音乐</a>
-                <a href="film.html">电影</a>
-            </div>
+      
         </div>
     </div>
 
@@ -107,9 +124,8 @@
 
         var data = {
             msg: "hehe",
-            list: [],
+            item: {},
             imagePrefix: imagePrefix,
-            keyword: ""
         }
 
         var app = new Vue({
@@ -121,22 +137,18 @@
 
             },
             methods: {
-                dealShowDetail(id){
-                    sessionStorage.id = id;
-                    location.href = "bookDetail.html"
-                },
-                dealSearch() {
-                    console.log("dealSearch")
-                    this.downloadData()
-                },
+
                 downloadData() {
 
-                    var url = bookListUrl + "&keyword=" + this.keyword
+                    var id = sessionStorage.id
+                    console.log("id = "+id)
                     
+                    var url = musicDetailUrl + "&id=" + id
                     axios.get(url).then(res => {
-                        this.list = res.data.result
+                        this.item = res.data.result
+
+                        console.log(this.item)
                     })
-                   
 
                 }
             }

@@ -16,7 +16,7 @@
         .cell{
             height: 140px;
             position: relative;
-
+            box-sizing: border-box;
             border-bottom: 1px solid #ccc;
         }
         .cell img{
@@ -26,38 +26,43 @@
             left: 10px;
             top: 10px;
         }
-        .cell>span:nth-of-type(1){
+        .info{
+            /* border: 1px solid red; */
+            width: calc(100%-100px);
+            height: 70%;
             position: absolute;
-            left: 100px;
-            top: 10px;
-            font-size: 18px;
+            left: 90px;
+            top: 10px;  
+            box-sizing: border-box; 
+            margin-left: 15px;    
+           
         }
-        .cell>span:nth-of-type(2){
+        .info div{
+            width: 100%;
+            height: 18px;
+            font-size: 13px;
+            line-height: 18px;
+            /* border: 1px solid red; */
+
+        }
+        .info-title{
+            color: #66BA9C;
+            margin-right:5px; 
+        }
+        .cell button{
+            background: #66BA9C;
+            width: 60px;
+            height: 20px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            line-height: 20px;
+            color: #fff;
             position: absolute;
-            left: 100px;
-            top: 50px;
-            font-size: 15px;
-            color: #666;
+            left: 28%;
+            bottom: 10px;
         }
-        .cell>span:nth-of-type(3){
-            position: absolute;
-            left: 100px;
-            top: 100px;
-            font-size: 15px;
-            color: #666;
-        }
-        .cell>span:nth-of-type(4){
-            position: absolute;
-            right: 10px;
-            top: 100px;
-            font-size: 15px;
-            color: #666;
-        }
-        .price{
-            color: #00b7a5;
-            font-size: 26px;
-            margin-right: 5px;
-        }
+        
     
     </style>
 </head>
@@ -68,7 +73,7 @@
     <div id="app">
         <div class="navbar">
             <div></div>
-            <div>图书列表</div>
+            <div>影视列表</div>
             <div></div>
         </div>
 
@@ -83,10 +88,15 @@
 
                 <div class="cell" v-for="(item,index) in list" @click="dealShowDetail(item.id)">
                     <img :src="imagePrefix+item.image" alt="">
-                    <span>{{item.name}}</span>
-                    <span>{{item.publisher}}</span>
-                    <span><span class="price">{{item.price}}</span>元</span>
-                    <span>{{item.pages}}页</span>
+                    <div class="info">
+                        <div><span class="info-title">电影名：</span>{{item.name}}</div>
+                        <div><span class="info-title">导演：</span>{{item.director}}</div>
+                        <div><span class="info-title">主演：</span>{{item.actor}}</div>
+                        <div><span class="info-title">评价：</span>{{item.rating}}</div>
+                        <div><span class="info-title">上映时间：</span>{{item.pubdate}}</div>
+                    </div>
+                    <button>去豆瓣</button>
+                 
                 </div>
 
 
@@ -123,7 +133,7 @@
             methods: {
                 dealShowDetail(id){
                     sessionStorage.id = id;
-                    location.href = "bookDetail.html"
+                    location.href = "filmDetail.html"
                 },
                 dealSearch() {
                     console.log("dealSearch")
@@ -131,12 +141,10 @@
                 },
                 downloadData() {
 
-                    var url = bookListUrl + "&keyword=" + this.keyword
-                    
+                    var url = filmListUrl + "&keyword=" + this.keyword
                     axios.get(url).then(res => {
                         this.list = res.data.result
                     })
-                   
 
                 }
             }

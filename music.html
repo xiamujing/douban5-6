@@ -21,44 +21,52 @@
         }
         .cell img{
             position: absolute;
-            width: 80px;
-            height: 120px;
-            left: 10px;
+            width: 60px;
+            height: 60px;
+            left: 40%;
             top: 10px;
+            border-radius: 50%;
         }
-        .cell>span:nth-of-type(1){
+        .info{
+            /* border: 1px solid red; */
+            width: 100%;
+            height: 50px;
             position: absolute;
-            left: 100px;
-            top: 10px;
-            font-size: 18px;
+            left: 0;
+            top: 75px;
+            display: flex;
+            flex-wrap: wrap;
+            /* justify-content: space-around; */
+            
+           
         }
-        .cell>span:nth-of-type(2){
+        .cell div>span{
+            width: 50%;
+            height: 18px;
+            font-size: 13px;
+            line-height: 18px;
+            /* border: 1px solid red; */
+           
+
+        }
+        .info-title{
+            color: #66BA9C;
+            margin-right:5px; 
+        }
+        .cell button{
+            background: #66BA9C;
+            width: 60px;
+            height: 20px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            line-height: 20px;
+            color: #fff;
             position: absolute;
-            left: 100px;
-            top: 50px;
-            font-size: 15px;
-            color: #666;
+            left: 40%;
+            bottom: 2px;
         }
-        .cell>span:nth-of-type(3){
-            position: absolute;
-            left: 100px;
-            top: 100px;
-            font-size: 15px;
-            color: #666;
-        }
-        .cell>span:nth-of-type(4){
-            position: absolute;
-            right: 10px;
-            top: 100px;
-            font-size: 15px;
-            color: #666;
-        }
-        .price{
-            color: #00b7a5;
-            font-size: 26px;
-            margin-right: 5px;
-        }
-    
+        
     </style>
 </head>
 
@@ -68,7 +76,7 @@
     <div id="app">
         <div class="navbar">
             <div></div>
-            <div>图书列表</div>
+            <div>音乐列表</div>
             <div></div>
         </div>
 
@@ -83,10 +91,13 @@
 
                 <div class="cell" v-for="(item,index) in list" @click="dealShowDetail(item.id)">
                     <img :src="imagePrefix+item.image" alt="">
-                    <span>{{item.name}}</span>
-                    <span>{{item.publisher}}</span>
-                    <span><span class="price">{{item.price}}</span>元</span>
-                    <span>{{item.pages}}页</span>
+                    <div class="info">
+                        <span><span class="info-title">曲目</span>{{item.name}}</span>
+                        <span><span class="info-title">演唱</span>{{item.artist}}</span>
+                        <span><span class="info-title">时间</span>{{item.pubdate}}</span>
+                        <span><span class="info-title">评分</span>{{item.rating}}</span>
+                    </div>
+                    <button>去豆瓣</button>
                 </div>
 
 
@@ -123,7 +134,7 @@
             methods: {
                 dealShowDetail(id){
                     sessionStorage.id = id;
-                    location.href = "bookDetail.html"
+                    location.href = "musicDetail.html"
                 },
                 dealSearch() {
                     console.log("dealSearch")
@@ -131,12 +142,10 @@
                 },
                 downloadData() {
 
-                    var url = bookListUrl + "&keyword=" + this.keyword
-                    
+                    var url = musicListUrl + "&keyword=" + this.keyword
                     axios.get(url).then(res => {
                         this.list = res.data.result
                     })
-                   
 
                 }
             }
